@@ -24,19 +24,22 @@ def soup_to_sentences(soup):
                 paragraphs = block.find_all("p")
                 for p in paragraphs:
                     p = str(p).replace("<p>","").replace("</p>","")
-                    sentences = tokenizer.tokenize(p)
-                    for sentence in sentences:
-                        sentence_list.append(sentence.split())
+                    try:
+                        sentences = tokenizer.tokenize(p)
+                        for sentence in sentences:
+                            sentence_list.append(sentence.split())
+                    except UnicodeDecodeError:
+                        pass
     return sentence_list
 
 # Set-up sentences
-os.chdir("/Users/jmoore523/Documents/01/")
+os.chdir("/Users/jmoore523/Documents/NYT_Test/")
 sentences = []
 for root, dirs, files in os.walk("."):
     path = root.split('/')
     for file in files:
         if file.endswith(".xml"):
-            soup = file_to_soup("./" + str(os.path.basename(root)) + "/" + str(file))
+            soup = file_to_soup("./" + str("/".join(path)) + "/" + str(file))
             for element in soup_to_sentences(soup):
                 sentences.append(element)
 
