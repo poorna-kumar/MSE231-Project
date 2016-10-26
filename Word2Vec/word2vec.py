@@ -56,3 +56,13 @@ print "Similarlity: Business & Revenue"
 print model.similarity('business', 'revenue')
 print "Similarlity: Job & Career"
 print model.similarity('job', 'career')
+
+print "Similarlity: She & Strong"
+print model.similarity('she', 'strong')
+print "Similarlity: She & Weak"
+print model.similarity('she', 'weak')
+
+print "Similarlity: He & Strong"
+print model.similarity('he', 'strong')
+print "Similarlity: He & Weak"
+print model.similarity('he', 'weak')
