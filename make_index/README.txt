@@ -1,13 +1,13 @@
 make_index.py:
     makes the index given a year for all fields in the NYT Corpus
 
-index:
+index_s_*.tsv.gz:
     a tab delineated file to index articles where each article has only one value
     see index.header for the headers
     Guid - unique identifier of the article
 
-index_m:
-    a tabl delineated file to index articles where each article may have more than one value
+index_m_*.tsv.gz:
+    a tab delineated file to index articles where each article may have more than one value
     see index_m.header for the headers
     Guid - unique identifier of the article
     Tag - name of the tag of the interest
