@@ -56,10 +56,10 @@ for tarinfo in tar:
     # print content
     docdata = {}
     # data in all articles
-    docdata['Guid'] =  soup.find('doc-id')['id-string']
-    docdata['News_Desk'] = soup.find('meta', {'name': 'dsk'})['content']
-    docdata['Publication_Date'] = soup.find('pubdata')['date.publication'][:8] #slice first 8 characters for YYYYMMDD
-    docdata['Section'] = soup.find('meta', {'name':'print_section'})['content']
+    docdata['Guid'] =  soup.find('doc-id')['id-string'].strip()
+    docdata['News_Desk'] = soup.find('meta', {'name': 'dsk'})['content'].strip()
+    docdata['Publication_Date'] = soup.find('pubdata')['date.publication'].strip()[:8] #slice first 8 characters for YYYYMMDD
+    docdata['Section'] = soup.find('meta', {'name':'print_section'})['content'].strip()
     # single stuff
     try:
         sections = soup.find('meta', {'name': 'online_sections'})['content'].split(';')
@@ -74,7 +74,7 @@ for tarinfo in tar:
         docdata[tag] = []
         try:
             for field in soup_m.find_all(tags_m[tag]):
-                docdata[tag].append(unicode(field.string))
+                docdata[tag].append(unicode(field.string).strip())
         except TypeError:
             pass
 
@@ -85,7 +85,7 @@ for tarinfo in tar:
     for i,tag in enumerate(tags_m):
         for field in docdata[tag]:
             # print 'Multi:','\t'.join([docdata['Guid'], field, str(i)])
-            index_m_writer.writerow([docdata['Guid'], field, str(i)])
+            index_m_writer.writerow([docdata['Guid'], field.encode('utf-8'), str(i)])
 
     # print docdata
     counter += 1
