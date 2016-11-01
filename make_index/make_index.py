@@ -22,7 +22,7 @@ index_m = gzip.open('output/index_m_%s%02d.tsv.gz' % (args.year, args.month), 'w
 index_s_writer = csv.writer(index_s, delimiter='\t')
 index_m_writer = csv.writer(index_m, delimiter='\t')
 
-data_dir = '../../data/nyt_corpus/data'
+data_dir = '../data/nyt_corpus/data'
 
 tags_s = ['Guid', 'News_Desk', 'Publication_Date', 'Section']
 # print '\t'.join(tags_s)
