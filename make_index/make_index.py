@@ -9,13 +9,16 @@ import argparse
 from datetime import datetime
 from bs4 import BeautifulSoup, SoupStrainer
 
+def clean_str(s):
+    return ' '.join(s.split())
+
 parser = argparse.ArgumentParser()
 parser.add_argument("year", help="the year of articles to index", type=int)
 parser.add_argument("month", help="the month of the articles to index", type=int)
 args = parser.parse_args()
 
-index_s = gzip.open('index_s_%s%02d.tsv.gz' % (args.year, args.month), 'w')
-index_m = gzip.open('index_m_%s%02d.tsv.gz' % (args.year, args.month), 'w')
+index_s = gzip.open('output/index_s_%s%02d.tsv.gz' % (args.year, args.month), 'w')
+index_m = gzip.open('output/index_m_%s%02d.tsv.gz' % (args.year, args.month), 'w')
 index_s_writer = csv.writer(index_s, delimiter='\t')
 index_m_writer = csv.writer(index_m, delimiter='\t')
 
@@ -42,7 +45,7 @@ os.chdir(data_dir)
 os.chdir(str(args.year))
 
 start_time = datetime.now()
-print 'Starting script at', start_time
+print 'Starting script (year=%s, month=%s):' % (args.year, args.month), start_time
 tar = tarfile.open('%02d' % args.month + ".tgz", 'r')
 counter = 0
 for tarinfo in tar:
@@ -56,14 +59,14 @@ for tarinfo in tar:
     # print content
     docdata = {}
     # data in all articles
-    docdata['Guid'] =  soup.find('doc-id')['id-string'].strip()
-    docdata['News_Desk'] = soup.find('meta', {'name': 'dsk'})['content'].strip()
-    docdata['Publication_Date'] = soup.find('pubdata')['date.publication'].strip()[:8] #slice first 8 characters for YYYYMMDD
-    docdata['Section'] = soup.find('meta', {'name':'print_section'})['content'].strip()
+    docdata['Guid'] =  clean_str(soup.find('doc-id')['id-string'])
+    docdata['News_Desk'] = clean_str(soup.find('meta', {'name': 'dsk'})['content'])
+    docdata['Publication_Date'] = clean_str(soup.find('pubdata')['date.publication'])[:8] #slice first 8 characters for YYYYMMDD
+    docdata['Section'] = clean_str(soup.find('meta', {'name':'print_section'})['content'])
     # single stuff
     try:
         sections = soup.find('meta', {'name': 'online_sections'})['content'].split(';')
-        sections = [x.strip() for x in sections]
+        sections = [clean_str(x) for x in sections]
         docdata['Online_Section'] = sections
     except TypeError:
         docdata['Online_Section'] = []
@@ -74,7 +77,7 @@ for tarinfo in tar:
         docdata[tag] = []
         try:
             for field in soup_m.find_all(tags_m[tag]):
-                docdata[tag].append(unicode(field.string).strip())
+                docdata[tag].append(unicode(clean_str(field.string)).strip())
         except TypeError:
             pass
 
@@ -89,8 +92,8 @@ for tarinfo in tar:
 
     # print docdata
     counter += 1
-    if not counter % 1000:
-        print counter,'files processed:', datetime.now()-start_time
+#    if not counter % 1000:
+#        print counter,'files processed:', datetime.now()-start_time
 #    if counter >= 10:
 #        break
 tar.close()
