@@ -1,11 +1,10 @@
 from gensim.models import Word2Vec
 
 years = range(1987,2007)
-topics = ['Business','Technology']
+topics = ['Business','Technology','Health','Science']
 
 gender_words = ['man','woman','he','she']
-words = ['woman','leader','manager','father','mother','strong','weak',
-'founder','entrepreneur','scientist']
+words = ['woman','leader','manager','father','mother','strong','weak']
 
 headers = ['topic','year','vocabulary']
 for gender_word in gender_words:

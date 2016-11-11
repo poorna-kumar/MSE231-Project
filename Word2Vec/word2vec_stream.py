@@ -54,6 +54,7 @@ class ArticleSentences(object):
                         continue
                     if self.section not in online_sections:
                         continue
+
                     # Obtain body content
                     contents =  soup.find_all("body.content")
                     for content in contents:
