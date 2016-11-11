@@ -52,9 +52,8 @@ class ArticleSentences(object):
                         online_sections = [s.replace(" ","") for s in online_sections]
                     except TypeError:
                         continue
-                    if self.section not in online_sections:
+                    if (self.section not in online_sections) and (self.section != "all"):
                         continue
-
                     # Obtain body content
                     contents =  soup.find_all("body.content")
                     for content in contents:
