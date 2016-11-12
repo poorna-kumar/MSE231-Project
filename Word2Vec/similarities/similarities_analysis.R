@@ -5,7 +5,6 @@ library(ggplot2)
 ################
 # Similarities #
 ################
-# Alter data frame
 w2v_sim_df <- read.csv("similarities.tsv", sep="\t")
 w2v_sim_df <- filter(w2v_sim_df, topic != "Technology")
 w2v_sim_df <- w2v_sim_df %>% mutate(woman_to_man_leader = woman_leader/man_leader,
