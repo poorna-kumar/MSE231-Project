@@ -4,9 +4,9 @@ years = range(1987,2007)
 
 # Identify words to be compared
 gender_words = ['man','woman','he','she']
-words = {'business' : ['financier','entrepreneur','broker','investor'], 
-         'education' : ['teacher','educator','professor','nanny'],
-         'science&tech' : ['scientist','programmer','chemist','biologist','physicist']}
+words = {'business' : ['financier','entrepreneur','broker','investor','accountant'], 
+         'health' : ['doctor','nurse','physician','therapist','surgeon'],
+         'science&tech' : ['scientist','engineer','chemist','biologist','physicist']}
 
 # Print headers
 headers = ['year','topic','gender_word','word','similarity']
@@ -15,22 +15,9 @@ print "\t".join(headers)
 # Loop through each year
 for year in years:
     # Load model
-    model = Word2Vec.load("/Volumes/My Book/W2VModels/{}all.w2v".format(year))
-
-    # Compute gender vector: man-woman
-    # todo
-
-    # Compute gender vector: he-she
-    # todo
-
+    model = Word2Vec.load("/Volumes/My Book/W2VModels/{}all.w2v".format(year)
     for topic in words.keys():
         for word in words[topic]:   
-            # Compare to gender vector: man-woman
-            # todo
-
-            # Compare to gender vector: he-she
-            # to do
-
             for gender_word in gender_words:    
 
                 # Initialize info vector
