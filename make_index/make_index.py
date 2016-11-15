@@ -67,9 +67,9 @@ for tarinfo in tar:
     try:
         sections = soup.find('meta', {'name': 'online_sections'})['content'].split(';')
         sections = [clean_str(x) for x in sections]
-        docdata['Online_Section'] = sections
+        docdata['Online_Sections'] = sections
     except TypeError:
-        docdata['Online_Section'] = []
+        docdata['Online_Sections'] = []
 
     # indecies with multiple values:
     soup_m = soup.find('identified-content')
