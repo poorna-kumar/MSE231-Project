@@ -85,7 +85,7 @@ for tarinfo in tar:
     #print 'Single:','\t'.join(list_to_print)
     index_s_writer.writerow(list_to_print)
 
-    for i,tag in enumerate(tags_m):
+    for i,tag in enumerate(tags_ml):
         for field in docdata[tag]:
             # print 'Multi:','\t'.join([docdata['Guid'], field, str(i)])
             index_m_writer.writerow([docdata['Guid'], field.encode('utf-8'), str(i)])
