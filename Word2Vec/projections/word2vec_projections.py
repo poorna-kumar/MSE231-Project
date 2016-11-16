@@ -10,7 +10,8 @@ words = {'business' : ['financier','entrepreneur','broker','investor','accountan
          'health' : ['doctor','nurse','physician','therapist','surgeon'],
          'science&tech' : ['scientist','engineer','chemist','biologist','physicist'],
          'arts' : ['artist','writer','musician','painter','actor','actress'],
-         'service' : ['waiter','waitress','receptionist','housekeeper','driver','cashier']}
+         'service' : ['waiter','waitress','receptionist','housekeeper','driver','cashier'],
+         'neutral' : ['room','picture','book','shoe','tea','dog','glasses','hamburger']}
 
 # Print headers
 headers = ['year','topic','word_diff','word','similarity']
