@@ -7,11 +7,12 @@ years = range(1987,2007)
 # Identify words to be compared
 gender_words = ['man','woman','he','she']
 words = {'business' : ['financier','entrepreneur','broker','investor','accountant'], 
-         'health' : ['doctor','nurse','physician','therapist','surgeon'],
+         'health' : ['doctor','nurse','physician','pharmacist','surgeon'],
          'science&tech' : ['scientist','engineer','chemist','biologist','physicist'],
-         'arts' : ['artist','writer','musician','painter','actor','actress'],
-         'service' : ['waiter','waitress','receptionist','housekeeper','driver','cashier'],
-         'neutral' : ['room','picture','book','shoe','tea','dog','glasses','hamburger']}
+         'arts' : ['artist','writer','musician','painter','singer'],
+         'service' : ['salesperson','receptionist','housekeeper','driver','cashier'],
+         'neutral' : ['room','picture','book','shoe','tea','dog','glasses','hamburger'],
+         'litcomp' : ['architect','captain','philosopher','hero','legend','aide','correspondent','chef','patron','comic','nurse','librarian','nanny','stylist','dancer']}
 
 # Print headers
 headers = ['year','topic','word_diff','word','similarity']

@@ -27,9 +27,20 @@ def clean_up(sentence):
 
     return sentence
 
+def any_in(l1,l2):
+    """
+    """
+    return any(i in l1 for i in l2)
+
 def find_sentences(dir_path,w1,w2):
+    # Split words into lists
+    w1 = w1.split()
+    w2 = w2.split()
+
+    # Set-up tracking variables
     article_count = 0
-    hit_count = 0
+    w1_count = [0]*len(w1)
+
     # Change directory to specified path
     os.chdir(dir_path)
     # Walk through files
@@ -62,20 +73,22 @@ def find_sentences(dir_path,w1,w2):
                                 for sentence in sentences:
                                     sentence = clean_up(sentence)
                                     words = word_tokenizer.tokenize(sentence)
-                                    if w1 in words and w2 in words:
-                                        print words
-                                        hit_count = hit_count + 1
+                                    if any_in(w1,words) and any_in(w2,words):
+                                        for i, w1_word in enumerate(w1):
+                                            if w1_word in words:
+                                                print w1_word
+                                                w1_count[i] = w1_count[i] + 1 
                             except UnicodeDecodeError:
                                 pass
     print article_count
-    print hit_count
+    print w1_count
 
 # Parse arguments
 parser = argparse.ArgumentParser(description='Evaluate accuracy')
 parser.add_argument('-d','--doc_path', action="store", default = False)
-parser.add_argument('-w1','--word1', action="store", default = False)
-parser.add_argument('-w2','--word2', action="store", default = False)
+parser.add_argument('-w1','--words1', action="store", default = False)
+parser.add_argument('-w2','--words2', action="store", default = False)
 args = vars(parser.parse_args())
 
 # Print sentences
-find_sentences(args['doc_path'],args['word1'],args['word2'])
+find_sentences(args['doc_path'],args['words1'],args['words2'])
