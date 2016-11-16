@@ -8,7 +8,9 @@ years = range(1987,2007)
 gender_words = ['man','woman','he','she']
 words = {'business' : ['financier','entrepreneur','broker','investor','accountant'], 
          'health' : ['doctor','nurse','physician','therapist','surgeon'],
-         'science&tech' : ['scientist','engineer','chemist','biologist','physicist']}
+         'science&tech' : ['scientist','engineer','chemist','biologist','physicist'],
+         'arts' : ['artist','writer','musician','painter','actor','actress'],
+         'service' : ['waiter','waitress','receptionist','housekeeper','driver','cashier']}
 
 # Print headers
 headers = ['year','topic','word_diff','word','similarity']
