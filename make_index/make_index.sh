@@ -12,7 +12,7 @@ set -e
 #exit 0
 
 # for all other years, 12 months of data, set you data ranges
-for yr in `seq 2006 2006`;
+for yr in `seq 2002 2003`;
 do
     for mo in `seq 1 12`;
     do
