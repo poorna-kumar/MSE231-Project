@@ -37,7 +37,7 @@ guid_pattern =  re.compile('/([^/]*)\\.xml$')
 sentence_tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
 word_tokenizer = RegexpTokenizer(r'\w+')
 
-sections_filter = frozenset(['Arts', 'Business', 'Front Page', 'Health', 'Science', 'Technology'])
+#sections_filter = frozenset(['Arts', 'Business', 'Front Page', 'Health', 'Science', 'Technology'])
 
 def clean_str(s):
     return ' '.join(s.split())
@@ -51,7 +51,8 @@ def get_info_from_file(f_handle):
 
     try:
         sections = soup.find('meta', {'name': 'online_sections'})['content'].split(';')
-        sections = [clean_str(x) for x in sections if clean_str(x) in sections_filter]
+        #sections = [clean_str(x) for x in sections if clean_str(x) in sections_filter]
+        sections = {clean_str(x) for x in sections}
     except TypeError:
         sections = set()
 
@@ -89,7 +90,7 @@ print 'Starting script (year=%s, month=%s):' % (year, month), start_time
 tar = tarfile.open('%02d' % month + ".tgz", 'r')
 counter = 0
 
-full_dict = {section : dict.fromkeys(words_all, 0) for section in sections_filter | set(["All"])}
+full_dict = {"All" : dict.fromkeys(words_all, 0)}
 
 for tarinfo in tar:
     if not tarinfo.isfile():
@@ -116,7 +117,7 @@ for tarinfo in tar:
             for word in words:
                 if word in words_all:
                     for section in sections:
-                        full_dict[section][word] += 1
+                        full_dict.setdefault(section, dict.fromkeys(words_all, 0))[word] += 1
                     full_dict['All'][word] += 1
 
     counter += 1
