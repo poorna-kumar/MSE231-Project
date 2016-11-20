@@ -127,7 +127,7 @@ for tarinfo in tar:
 
 tar.close()
 os.chdir(cwd) # get back to original location
-with gzip.open('wc_%s%02d.out.gz' % (year, month), 'wb') as tsvfile:
+with open('wc_%s%02d.tsv' % (year, month), 'wb') as tsvfile:
     columns = ['Section', 'Month', 'Year']
     columns.extend(list(words_all))
     tsvwriter = csv.DictWriter(tsvfile, columns, delimiter="\t")
