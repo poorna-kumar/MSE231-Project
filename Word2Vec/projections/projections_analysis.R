@@ -76,16 +76,35 @@ ggplot(w2v_curr_df, aes(x = he_she, y = man_woman, colour = topic)) +
   ylim(min_proj,max_proj) 
 ggsave(paste0("./Plots/ProjLitComp",curr_year,".pdf"), height = 5, width = 5)
 
-#############
-# OVER TIME #
-#############
-#words <- unique(w2v_df$word)
-#for (w in words) {
-  #w2v_word_df <- filter(w2v_df, word == w)
-  #ggplot(w2v_word_df, aes(x = year, y = similarity, colour = word_diff, group = word_diff)) +
-  #             geom_line() +
-  #             labs(x = "Year", y = "Similarity", colour = "Gendered Word", title = paste0("Word: ", w)) +
-  #             theme(legend.position = 'bottom') +
-  #             ylim(min(w2v_word_df$similarity)-0.05,max(w2v_word_df$similarity)+0.05)
-  #ggsave(paste0("./Plots/Word",w,"OT.png"))
-#}
+######################
+# OVER TIME - HE/SHE #
+######################
+cols <- gg_color_hue(5)
+w2v_heshe_df <- filter(w2v_df, word_diff == "He-She" & topic != 'litcomp' & topic != 'neutral') %>% 
+                  group_by(topic, year) %>%
+                  summarise(avg_sim = mean(similarity))
+ggplot(w2v_heshe_df, aes(x = year, y = avg_sim, colour = topic, group = topic)) + 
+  geom_line() +
+  scale_colour_manual(name="",
+                      values=cols,
+                      breaks=c("arts","business","health","science&tech","service"),
+                      labels=c("Arts", "Business", "Health", "Science & Technology", "Service")) +
+  labs(x = "", y = "Average Cosine Similarity to 'He'-'She'") +
+  theme(legend.position = "none")
+ggsave("./Plots/HeSheAvgOT.pdf", height = 5, width = 6)
+
+######################
+# OVER TIME - HE/SHE #
+######################
+w2v_manwoman_df <- filter(w2v_df, word_diff == "Man-Woman" & topic != 'litcomp' & topic != 'neutral') %>% 
+  group_by(topic, year) %>%
+  summarise(avg_sim = mean(similarity))
+ggplot(w2v_manwoman_df, aes(x = year, y = avg_sim, colour = topic, group = topic)) + 
+  geom_line() +
+  scale_colour_manual(name="",
+                      values=cols,
+                      breaks=c("arts","business","health","science&tech","service"),
+                      labels=c("Arts", "Business", "Health", "Science & Technology", "Service")) +
+  labs(x = "", y = "Average Cosine Similarity to 'Man'-'Woman'") +
+  theme(legend.position = "none")
+ggsave("./Plots/ManWomanAvgOT.pdf", height = 5, width = 6)
