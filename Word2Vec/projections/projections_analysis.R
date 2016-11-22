@@ -11,13 +11,13 @@ gg_color_hue <- function(n) {
   hcl(h = hues, l = 65, c = 100)[1:n]
 }
 
+min_proj <- min(w2v_df$similarity)
+max_proj <- max(w2v_df$similarity)
+
 ##########################
 # PER YEAR - TOPIC WORDS #
 ##########################
 cols <- gg_color_hue(5)
-
-min_proj <- min(w2v_df$similarity)
-max_proj <- max(w2v_df$similarity)
 
 for (year_c in c(1987,2006)) {
   w2v_curr_df <- filter(w2v_df, year == year_c, topic != 'neutral' & topic != 'litcomp') %>%
@@ -90,7 +90,7 @@ ggplot(w2v_heshe_df, aes(x = year, y = avg_sim, colour = topic, group = topic)) 
                       breaks=c("arts","business","health","science&tech","service"),
                       labels=c("Arts", "Business", "Health", "Science & Technology", "Service")) +
   labs(x = "", y = "Average Cosine Similarity to 'He'-'She'") +
-  theme(legend.position = "none")
+  theme(legend.position = "bottom")
 ggsave("./Plots/HeSheAvgOT.pdf", height = 5, width = 6)
 
 ######################
@@ -106,5 +106,5 @@ ggplot(w2v_manwoman_df, aes(x = year, y = avg_sim, colour = topic, group = topic
                       breaks=c("arts","business","health","science&tech","service"),
                       labels=c("Arts", "Business", "Health", "Science & Technology", "Service")) +
   labs(x = "", y = "Average Cosine Similarity to 'Man'-'Woman'") +
-  theme(legend.position = "none")
+  theme(legend.position = "bottom")
 ggsave("./Plots/ManWomanAvgOT.pdf", height = 5, width = 6)
