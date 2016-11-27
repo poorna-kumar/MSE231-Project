@@ -30,11 +30,9 @@ def clean_up(sentence):
 class ArticleSentences(object):
     """
     """
-    def __init__(self, dirname, section, author_df, author_sex):
+    def __init__(self, dirname, file_set):
         self.dirname = dirname
-        self.section = section
-        self.author_df = author_df
-        self.author_sex = author_sex
+        self.file_set = file_set
  
     def __iter__(self):
         # Change directory to specified path
@@ -48,18 +46,8 @@ class ArticleSentences(object):
                     # Convert file to soup
                     soup = file_to_soup("./" + str("/".join(path)) + "/" + str(file))
 
-                    # Check that document has the correct online section
-                    try:
-                        online_sections = soup.find('meta', {'name': 'online_sections'})['content'].split(';')
-                        online_sections = [s.replace(" ","") for s in online_sections]
-                    except TypeError:
-                        continue
-                    if (self.section not in online_sections) and (self.section != "all"):
-                        continue
-
                     # Check that document has correct author gender
-                    [[self.author_df]]
-                    if ? != self.author_sex
+                    if file not in file_set:
                         continue
 
                     # Obtain body content
@@ -87,13 +75,19 @@ class ArticleSentences(object):
 parser = argparse.ArgumentParser(description='Evaluate accuracy')
 parser.add_argument('-d','--doc_path', action="store", default = False)
 parser.add_argument('-m','--model_file', action="store", default = False)
-parser.add_argument('-s','--online_section', action="store", default = False)
-parser.add_argument('-a','--authorinfo', action="store", default = False)
-parser.add_argument('-as','--author_sex', action="store", default = False)
+parser.add_argument('-af','--author_file', action="store", default = False)
+parser.add_argument('-as','--author_sex_desired', action="store", default = False)
 args = vars(parser.parse_args())
 
-# Read in author info
-author_df = 
+# Get set of relevant documents
+with open(args['author_file']) as f:
+    content = f.readlines()
+
+file_list = []
+for line in content:
+    if line.split("\t")[1].strip() == args['author_sex_desired']:
+        file_list.append(line.split("\t")[0].strip()) 
+file_set = set(file_list)
 
 # Build word2vec model
 ## Test save - to make sure you didn't screw something up
@@ -101,7 +95,7 @@ model = gensim.models.Word2Vec(iter=1)
 model.save(args['model_file'])
 
 ## Build model
-sentences = ArticleSentences(args['doc_path'], args['online_section'], author_df, args['author_sex'])
+sentences = ArticleSentences(args['doc_path'], file_set)
 model = gensim.models.Word2Vec(sentences)
 
 ## Save model
