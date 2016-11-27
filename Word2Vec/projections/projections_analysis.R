@@ -4,6 +4,7 @@ library(ggplot2)
 library(ggrepel)
 
 w2v_df <- read.csv("projections.tsv", sep="\t")
+w2v_mf_df <- read.csv("projections_authorgender.tsv", sep="\t")
 curr_year <- 2006
 
 gg_color_hue <- function(n) {
@@ -36,6 +37,28 @@ for (year_c in c(1987,2006)) {
     xlim(min_proj,max_proj) + 
     ylim(min_proj,max_proj) 
   ggsave(paste0("./Plots/Proj",year_c,".pdf"), height = 5, width = 5)
+}
+
+#############################
+# M/F AUTHORS - TOPIC WORDS #
+#############################
+for (g in c('M','F')) {
+  w2v_curr_df <- filter(w2v_mf_df, author_gender == g, topic != 'neutral' & topic != 'litcomp') %>%
+    spread(key = word_diff, value = similarity)
+  names(w2v_curr_df)[c(5,6)] <- c("he_she","man_woman")
+  ggplot(w2v_curr_df, aes(x = he_she, y = man_woman, colour = topic)) +
+    geom_point(size = .9) +
+    geom_text_repel(aes(label = word), size = 3) +
+    labs(x = "Cosine similarity with 'He' - 'She'", 
+         y = "Cosine similarity with 'Man' - 'Woman'") +
+    scale_colour_manual(name="",
+                        values=cols,
+                        breaks=c("arts","business","health","science&tech","service"),
+                        labels=c("Arts", "Business", "Health", "Science & Technology", "Service")) +
+    theme(legend.position = 'bottom') +
+    xlim(min_proj,max_proj) + 
+    ylim(min_proj,max_proj) 
+  ggsave(paste0("./Plots/Proj",g,".pdf"), height = 5, width = 5)
 }
 
 #################
