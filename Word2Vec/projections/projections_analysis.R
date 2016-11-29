@@ -42,25 +42,28 @@ for (year_c in c(1987,2006)) {
 #############################
 # M/F AUTHORS - TOPIC WORDS #
 #############################
-for (g in c('M','F')) {
-  w2v_curr_df <- filter(w2v_mf_df, author_gender == g, topic != 'neutral' & topic != 'litcomp') %>%
-    spread(key = word_diff, value = similarity)
-  names(w2v_curr_df)[c(5,6)] <- c("he_she","man_woman")
-  ggplot(w2v_curr_df, aes(x = he_she, y = man_woman, colour = topic)) +
-    geom_point(size = .9) +
-    geom_text_repel(aes(label = word), size = 3) +
-    labs(x = "Cosine similarity with 'He' - 'She'", 
-         y = "Cosine similarity with 'Man' - 'Woman'") +
-    scale_colour_manual(name="",
-                        values=cols,
-                        breaks=c("arts","business","health","science&tech","service"),
-                        labels=c("Arts", "Business", "Health", "Science & Technology", "Service")) +
-    theme(legend.position = 'bottom') +
-    xlim(min_proj,max_proj) + 
-    ylim(min_proj,max_proj) 
-  ggsave(paste0("./Plots/Proj",g,".pdf"), height = 5, width = 5)
+years <- unique(w2v_mf_df$year)
+for (y in years) {
+  for (g in c('M','F')) {
+    w2v_curr_df <- filter(w2v_mf_df, year == y, author_gender == g, topic != 'neutral' & topic != 'litcomp') %>%
+      spread(key = word_diff, value = similarity)
+    names(w2v_curr_df)[c(5,6)] <- c("he_she","man_woman")
+    ggplot(w2v_curr_df, aes(x = he_she, y = man_woman, colour = topic)) +
+      geom_point(size = .9) +
+      geom_text_repel(aes(label = word), size = 3) +
+      labs(x = "Cosine similarity with 'He' - 'She'", 
+           y = "Cosine similarity with 'Man' - 'Woman'") +
+      scale_colour_manual(name="",
+                          values=cols,
+                          breaks=c("arts","business","health","science&tech","service"),
+                          labels=c("Arts", "Business", "Health", "Science & Technology", "Service")) +
+      theme(legend.position = 'bottom') +
+      xlim(min_proj,max_proj) + 
+      ylim(min_proj,max_proj) 
+    ggsave(paste0("./Plots/",y,"Proj",g,".pdf"), height = 5, width = 5)
+  }
 }
-
+  
 #################
 # NEUTRAL WORDS #
 #################

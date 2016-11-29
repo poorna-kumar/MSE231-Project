@@ -2,7 +2,7 @@ from gensim.models import Word2Vec
 from numpy import dot
 from numpy.linalg import norm
 
-years = [2006]
+years = [1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 2006]
 
 # Identify words to be compared
 gender_words = ['man','woman','he','she']
