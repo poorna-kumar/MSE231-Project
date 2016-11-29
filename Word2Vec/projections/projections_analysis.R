@@ -42,6 +42,11 @@ for (year_c in c(1987,2006)) {
 #############################
 # M/F AUTHORS - TOPIC WORDS #
 #############################
+y_rec <- c()
+g_rec <- c()
+he_she_var <- c()
+man_woman_var <- c()
+
 years <- unique(w2v_mf_df$year)
 for (y in years) {
   for (g in c('M','F')) {
@@ -61,8 +66,32 @@ for (y in years) {
       xlim(min_proj,max_proj) + 
       ylim(min_proj,max_proj) 
     ggsave(paste0("./Plots/",y,"Proj",g,".pdf"), height = 5, width = 5)
+    
+    y_rec <- c(y_rec, y)
+    g_rec <- c(g_rec, g)
+    he_she_var <- c(he_she_var, var(w2v_curr_df$he_she))
+    man_woman_var <- c(man_woman_var,var(w2v_curr_df$man_woman))
   }
 }
+
+##########################
+# M/F AUTHORS - VARIANCE #
+##########################
+var_df <- data.frame(cbind(rep(y_rec,2), rep(g_rec,2), c(rep("he_she",length(he_she_var)),rep("man_woman",length(man_woman_var))), c(he_she_var, man_woman_var)))
+names(var_df) <- c("year","author_gender","direction","variance")
+var_df$variance <- as.numeric(as.character(var_df$variance))
+
+var_df1 <- filter(var_df, direction == "he_she")
+ggplot(data = var_df1, aes(x = year, y = variance, group = author_gender, colour = author_gender)) +
+  geom_line() +
+  labs(x = "Year", y = "Variance", title = "He-She") +
+  theme(legend.position = 'bottom')
+
+var_df2 <- filter(var_df, direction == "man_woman")
+ggplot(data = var_df2, aes(x = year, y = variance, group = author_gender, colour = author_gender)) +
+  geom_line() +
+  labs(x = "Year", y = "Variance", title = "Man-Woman") +
+  theme(legend.position = 'bottom')
   
 #################
 # NEUTRAL WORDS #
