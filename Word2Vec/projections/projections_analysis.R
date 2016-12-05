@@ -3,6 +3,7 @@ library(dplyr)
 library(ggplot2)
 library(ggrepel)
 
+theme_set(theme_bw())
 w2v_df <- read.csv("projections.tsv", sep="\t")
 w2v_mf_df <- read.csv("projections_authorgender.tsv", sep="\t")
 curr_year <- 2006
