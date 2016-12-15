@@ -20,8 +20,8 @@ def wordIsPronoun(word):
 
 if __name__ == '__main__':
 
-    datadir = "../data/2006/"
-
+    year = sys.argv[1]
+    datadir = "../data/" + year
     #Discard set
     discardSet = set(['Opinion', 'Style', 'Corrections'])
     
@@ -69,21 +69,24 @@ if __name__ == '__main__':
                         elif word['lemma'] == 'she':
                             gend = 'female'
                     if gend is not None:
-                        for (dep_i, dep) in enumerate(sentence['basic-dependencies']):
-                            #For every word, we are iterating through all deps
-                            #Consider: "Her wit and her humor stand out."
-                            #Contains two possessive links.
-                            #We want to count each one only once, so we keep track ofaccounted deps.
-                            if dep_i in accounted_deps:
-                                continue
-                            if dep['dep'] == 'nmod:poss':
-                                accounted_deps.add(dep_i)
-                                if dep['dependentGloss'] == word['word']:
-                                    possession = dep['governorGloss']
-                                    if possession in depDict[gend]:
-                                        depDict[gend][possession] += 1
-                                    else:
-                                        depDict[gend][possession] = 1
+                        try:
+                            for (dep_i, dep) in enumerate(sentence['basicDependencies']):
+                                #For every word, we are iterating through all deps
+                                #Consider: "Her wit and her humor stand out."
+                                #Contains two possessive links.
+                                #We want to count each one only once, so we keep track ofaccounted deps.
+                                if dep_i in accounted_deps:
+                                    continue
+                                if dep['dep'] == 'nmod:poss':
+                                    accounted_deps.add(dep_i)
+                                    if dep['dependentGloss'] == word['word']:
+                                        possession = dep['governorGloss']
+                                        if possession in depDict[gend]:
+                                            depDict[gend][possession] += 1
+                                        else:
+                                            depDict[gend][possession] = 1
+                        except:
+                            continue
     depDictMaleTuple = sorted(depDict['male'].items(), key = itemgetter(1), reverse = True)
     depDictFemaleTuple = sorted(depDict['female'].items(), key = itemgetter(1), reverse = True)
     pprint.pprint(depDictMaleTuple[0:30])
